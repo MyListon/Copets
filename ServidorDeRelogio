@@ -1,0 +1,38 @@
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+
+public class ServidorDeRelogio {
+
+    public static void main(String args[]) {
+
+       System.out.println("Carregando...");
+
+       try {
+
+            String hostRemoto = "127.0.0.1";
+            int    portaUDP   = 600;
+            InetAddress endIPremoto = InetAddress.getByName(hostRemoto);
+
+            DatagramSocket soquete = new DatagramSocket ();
+            soquete.connect(endIPremoto,portaUDP);
+
+            System.out.println("main(): soquete criado.");
+            System.out.println("main(): endereço atribuido: "+soquete.getRemoteSocketAddress());
+
+            String mensagem = "O serviço está on-line";
+            byte[] dadosDaString = mensagem.getBytes();
+            DatagramPacket pacoteUdp = new DatagramPacket(dadosDaString, dadosDaString.length);
+
+            soquete.send(pacoteUdp);
+            System.out.println("main(): pacote UDP c/ mensagem foi enviado!");
+            System.out.print  ("main(): mensagem com "+mensagem.length());
+            System.out.println(" caracteres em "+mensagem.getBytes().length+" bytes.");
+       }
+       catch( Exception excecao )
+       {
+            System.err.println("main(): "+excecao);
+       }
+    }
+
+}
