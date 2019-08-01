@@ -1,0 +1,34 @@
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+
+public class ClinteDeRelogio {
+
+    public static void main(String args[]) {
+
+       System.out.println("Carregando...");
+
+       try
+       {
+            int portaUDP = 600;
+            DatagramSocket soquete = new DatagramSocket(portaUDP);
+
+            byte[] dadosDaMensagem = new byte[1500];
+            DatagramPacket pacoteUDP =
+                    new DatagramPacket(dadosDaMensagem, dadosDaMensagem.length);
+            while(true)
+            {
+                soquete.receive(pacoteUDP);
+                System.out.println("main(); recebido pacote com "+pacoteUDP.getLength()+" bytes.");
+
+                String mensagem =
+                    new String( pacoteUDP.getData(), 0, pacoteUDP.getLength() );
+                System.out.println("main(): mensagem recebida = "+mensagem);
+            }
+       }
+       catch(Exception excecao)
+       {
+            System.err.println("main(): "+excecao);
+       }
+    }
+
+}
