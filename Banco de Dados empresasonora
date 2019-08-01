@@ -1,0 +1,97 @@
+create database empresasonora
+default character set utf8
+default collate utf8_general_ci;
+
+use empresasonora;
+
+create table Cidade (
+idCidade int auto_increment,
+Cidade VARCHAR(45),
+UF VARCHAR(45) NULL,
+PRIMARY KEY (`idCidade`)
+)default charset=utf8;
+
+
+create table endereco(
+idEndereco int auto_increment,
+Rua VARCHAR(45),
+Bairro VARCHAR(45),
+CEP VARCHAR(45),
+Telefone VARCHAR(45),
+Cidade_idCidade int,
+PRIMARY KEY (idEndereco),  
+FOREIGN KEY (Cidade_idCidade) REFERENCES Cidade (idCidade)   
+)default charset=utf8;
+
+
+create table Musico(
+IdMusico int auto_increment,
+Nome VARCHAR(45),
+CPF VARCHAR(45),
+Endereco_idEndereco int,
+PRIMARY KEY (IdMusico), 
+FOREIGN KEY (Endereco_idEndereco) REFERENCES Endereco (idEndereco)  
+)default charset=utf8;
+
+
+create table Instrumento(
+idInstrumento int auto_increment,
+NomeInstrumento VARCHAR(45),
+PRIMARY KEY (idInstrumento)
+)default charset=utf8;
+
+
+create table Formato(
+idFormato int auto_increment,
+NomeFormato VARCHAR(45),
+PRIMARY KEY (idFormato)
+)default charset=utf8;
+
+
+create table Album(
+idAlbum int auto_increment,
+Titulo VARCHAR(45),
+DataDireitos VARCHAR(45),
+Identificador VARCHAR(45),
+Musico_IdMusico int,
+Formato_idFormato int,
+PRIMARY KEY (idAlbum),
+FOREIGN KEY (Musico_IdMusico) REFERENCES Musico (IdMusico), 
+FOREIGN KEY (Formato_idFormato)  REFERENCES Formato (idFormato)  
+)default charset=utf8;
+
+create table Musica(
+idMusica int auto_increment,
+TituloMusica VARCHAR(45),
+Musico_IdMusico int,
+Album_idAlbum int,
+PRIMARY KEY (idMusica),
+FOREIGN KEY (Musico_IdMusico) REFERENCES Musico (IdMusico),
+FOREIGN KEY (Album_idAlbum) REFERENCES Album (idAlbum)
+)default charset=utf8; 
+
+Create table Musico_tem_Instrumento (
+Musico_IdMusico int,
+Instrumento_idInstrumento int,
+PRIMARY KEY (Musico_IdMusico, Instrumento_idInstrumento),
+FOREIGN KEY (Musico_IdMusico) REFERENCES Musico (IdMusico),
+FOREIGN KEY (Instrumento_idInstrumento) REFERENCES Instrumento (idInstrumento)
+)default charset=utf8;
+
+create table Musico_tem_Musica (
+Musico_IdMusico int,
+Musica_idMusica int,
+PRIMARY KEY (`Musico_IdMusico`, `Musica_idMusica`),
+FOREIGN KEY (Musico_IdMusico) REFERENCES Musico (IdMusico),
+FOREIGN KEY (Musica_idMusica) REFERENCES Musica (idMusica)
+)default charset=utf8;
+
+create table Musica_tem_Instrumento (
+Musica_idMusica int,
+Instrumento_idInstrumento int,
+Sequencia int,
+TomMusical VARCHAR(45),
+PRIMARY KEY (Instrumento_idInstrumento, Sequencia, Musica_idMusica),
+FOREIGN KEY (Musica_idMusica) REFERENCES Musica (idMusica),
+FOREIGN KEY (Instrumento_idInstrumento) REFERENCES Instrumento(idInstrumento)
+)default charset=utf8;
